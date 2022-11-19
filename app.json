@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "book-recommendation",
     "name": "book-recommendation",
     "slug": "book-recommendation",
     "version": "1.0.0",
@@ -18,7 +19,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSAllowsArbitraryLoads": {
+            "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {

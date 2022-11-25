@@ -9,7 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/webpack-config": "^0.17.0",
+    "@expo/webpack-config": "^0.17.3",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
@@ -34,5 +34,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
-  "private": true
+  "private": true,
+  "proxy": "http://10.219.175.225:8085"
 }

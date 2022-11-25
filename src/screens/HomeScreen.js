@@ -10,12 +10,14 @@ const HomeScreen = ({navigation}) => {
   async function fetchData (){
     // let res = axios.get('http://127.0.0.1:5000/books')
     
-    // await fetch('http://10.219.175.225:5000/books',{
-    await fetch('https://karanjot1995.pythonanywhere.com/books',{
+    await fetch('http://10.219.175.225:8085/api/books',{
+    // await fetch('https://karanjot1995.pythonanywhere.com/books',{
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token'),
+        Authorization: 'Bearer ' + localStorage.getItem('token')
       }
     })
     .then((response) => response.json())
@@ -29,12 +31,6 @@ const HomeScreen = ({navigation}) => {
   },[])
   
   // const [state, dispatch]= useReducer(reducer,{name:''})
-  const data = [
-    {url:"",text:"Forest"},
-    {url:"",text:"Beach"},
-    {url:"",text:"Mountain"},
-
-  ]
 
   return(
     <View style={{backgroundColor:'#141414'}}>
@@ -46,7 +42,7 @@ const HomeScreen = ({navigation}) => {
         data={books}
         numColumns={2}
         renderItem={({ item }) =>
-        <TouchableOpacity  onPress={() => navigation.navigate("Book Details",{id:item['ISBN'],item,nav:'Home'})} >
+        <TouchableOpacity  onPress={() => navigation.navigate("Book Details",{id:item['id'],item,nav:'Home'})} >
          <Card item={item} />
          </TouchableOpacity>
         }

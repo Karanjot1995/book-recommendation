@@ -80,7 +80,7 @@ const Search  = () => {
 	const fetchData = async () =>{
 		// let res = axios.get('http://10.219.175.225:5000/books')
 		// console.log(res.data)
-		await fetch('https://karanjot1995.pythonanywhere.com/books',{
+		await fetch('http://10.219.175.225:8085/api/books',{
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
@@ -100,7 +100,7 @@ const Search  = () => {
 
 	const searchFunction = (text) => {
 		const updatedData = books.filter((item) => {
-		const item_data = `${item["Book-Title"].toUpperCase()})`;
+		const item_data = `${item["title"].toUpperCase()})`;
 		const text_data = text.toUpperCase();
 		return item_data.indexOf(text_data) > -1;
 		});

@@ -1,50 +1,58 @@
 import React,{useState, useReducer, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextInput,FlatList} from "react-native";
 import Card from "../components/common/Card";
-import booksData from './books.json';
+// import booksData from './books.json';
 
 const Recommendations = ({navigation}) => {
   const [state, setState] = useState({name:''})
+  const [books, setBooks] = useState({})
+  const [genreBooks, setGenreBooks] = useState({})
   const [token, setToken] = useState("")
 
   async function fetchData(){
-    await fetch('http://10.219.175.225:5000/profile',{
-      method: 'GET',
+    let opts = {
+      method: "GET",
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        'x-access-token': localStorage.getItem('token'),
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
       }
-    })
+    }
+    await fetch('http://10.219.175.225:8085/api/recommendations',opts)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
+      setGenreBooks(data.genre_books)
     });
   }
   useEffect(() => {
     fetchData()
-    setToken(localStorage.getItem('token'))
   },[])
   // const [state, dispatch]= useReducer(reducer,{name:''})
-  let books = booksData.slice(100,120)
-
+  // let books = booksData.slice(100,120)
 
   return(
-    <View style={{backgroundColor:'#141414'}}>
-      <FlatList
-        data={books}
-        numColumns={2}
-        renderItem={Card}
-        keyExtractor={(item, index) => index}
-      />
-    </View>
+    <ScrollView style={{backgroundColor:'#141414'}}>
+      {Object.keys(genreBooks).map(genre=>
+        <View>
+          <Text style={styles.text}>{genre}</Text>
+          <FlatList
+            data={genreBooks[genre].sort(() => Math.random() - 0.5)}
+            renderItem={Card}
+            horizontal={true}
+            keyExtractor={(item, index) => index}
+          />
+        </View>
+        // <Text style={styles.text}>{genre}</Text>
+      )}
+    </ScrollView>
   )
 };
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 30,
-    
+    color:'#fff'
   },
   input:{
     height: 50,

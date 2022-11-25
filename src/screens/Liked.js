@@ -11,8 +11,9 @@ const Liked = ({navigation}) => {
   const isFocused = useIsFocused();
 
   async function fetchData (){
-    await fetch('https://karanjot1995.pythonanywhere.com/books',{
-      method: 'GET',
+    // await fetch('https://karanjot1995.pythonanywhere.com/books',{
+    await fetch('http://10.219.175.225:8085/api/books',{
+        method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -23,10 +24,9 @@ const Liked = ({navigation}) => {
         let books = data.slice(0,100)
         let user = JSON.parse(localStorage.getItem('user'))
         if(user['liked']){
-            console.log(user['liked'])
             let res = books.filter(b=>{
                 for(let id of user['liked']){
-                    if(String(b['ISBN']) ==id){
+                    if(String(b['id']) ==id){
                         return b
                     }
                 }
@@ -41,7 +41,6 @@ const Liked = ({navigation}) => {
   }
   useEffect(() => {
     fetchData()
-    console.log(books)
   },[isFocused])
 
   return(

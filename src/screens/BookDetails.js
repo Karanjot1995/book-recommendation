@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import {Image, Text, StyleSheet, View , Pressable , TouchableOpacity , TextInput,FlatList} from "react-native";
+import {Image, Text, StyleSheet, View , Pressable , TouchableOpacity , TextInput,FlatList, ScrollView} from "react-native";
 import { Dimensions } from "react-native";
 const win = Dimensions.get('window');
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,7 +17,8 @@ const BookDetails = (props) => {
 //   let nav = props.route.params.nav
   // let book = booksData.filter(b=>b['ISBN'] == id)[0]
   async function fetchData (){
-    await fetch('https://karanjot1995.pythonanywhere.com/books',{
+    await fetch('http://10.219.175.225:8085/api/books',{
+    // await fetch('https://karanjot1995.pythonanywhere.com/books',{
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -26,12 +27,17 @@ const BookDetails = (props) => {
     })
     .then((response) => response.json())
     .then((data) => {
-      let books = data.slice(0,100)
-      let b = books.filter(b=>b['ISBN'] == id)[0]
+      let b = data.filter(b=>b['id'] == id)[0]
+      // genres = b.genres.replace(/'/g, '"')
+      // b.genres = JSON.parse(genres)
+      // a = b.genres.replace(/'/g, '"');
+      // a = JSON.parse(a);
+      // b.genres = b.genres.replace(/'/g, '"')
+      b.genres = JSON.parse(b.genres)
       setBook(b)
       setLoading(false)
       let user = JSON.parse(localStorage.getItem('user'))
-      if(user.liked && user['liked'].indexOf(String(b['ISBN'])) >-1){
+      if(user.liked && user['liked'].indexOf(String(b['id'])) >-1){
         setLiked(true)
       }
     });
@@ -41,7 +47,7 @@ const BookDetails = (props) => {
     let like = !liked
     setLiked(!liked)
     let body = {
-      id:book['ISBN'],
+      id:book['id'],
       liked: like
     }
     let opts = {
@@ -49,11 +55,13 @@ const BookDetails = (props) => {
       body:JSON.stringify(body),
       headers: {
         Accept: 'application/json',
+        'x-access-token': localStorage.getItem('token'),
         Authorization: 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
       }
     }      
-    await fetch('http://10.219.175.225:5000/like', opts)
+    await fetch('http://10.219.175.225:8085/api/like', opts)
+    // await fetch('http://10.219.175.225:5000/like', opts)
     .then(res=>res.json())
     .then(data=>{
       localStorage.setItem('user', JSON.stringify(data.user))
@@ -66,13 +74,13 @@ const BookDetails = (props) => {
     let u = localStorage.getItem('user')
     setUser(u)
   },[])
-  let imgUrl = book["Image-URL-L"] || book["Image-URL-M"] || book["Image-URL-S"]
+  let imgUrl = book["cover_img"]
   if(!imgUrl){
     imgUrl = 'https://img.webnovel.com/bookcover/12301378806233905/300/300.jpg?updateTime=1578397501796'
   }
   if(!loading){
   return (
-    <View style={styles.card}>
+    <ScrollView style={styles.card}>
     {/* <Button title="Go to Page" onPress={ () => navigation.navigate(nav)} /> */}
       <View style={styles.container}>
 
@@ -81,10 +89,12 @@ const BookDetails = (props) => {
             source={{uri:imgUrl}}
           />
           <View style={{'alignItems':'center'}}>
-            <Text style={styles.title}>{book["Book-Title"]}</Text>
-            <Text style={styles.text}>Author: {book["Book-Author"]}</Text>
-            <Text style={styles.text}>Publisher: {book["Publisher"]}</Text>
-            <Text style={styles.text}>Year of Publication: {book["Year-Of-Publication"]}</Text>
+            <Text style={styles.title}>{book["title"]}</Text>
+            <Text style={styles.text}>Author: {book["author"]}</Text>
+            <Text style={styles.text}>Publisher: {book["publisher"]}</Text>
+            <Text style={styles.text}>Year of Publication: {book["publication_year"]}</Text>
+            <Text style={styles.text}>Pages: {book["pages"]}</Text>
+            <Text style={styles.text}>Genre: {book["genres"].join(', ')}</Text>
           </View>
 
           <Pressable onPress={like}>
@@ -95,7 +105,7 @@ const BookDetails = (props) => {
             />
           </Pressable>
       </View>
-    </View>
+    </ScrollView>
   )}else{
     return (
       <View>
@@ -108,6 +118,7 @@ const BookDetails = (props) => {
 const styles = StyleSheet.create({
     container:{
         marginTop:20,
+        marginBottom:50,
         padding:10,
         justifyContent: 'center',
         alignItems: 'center',

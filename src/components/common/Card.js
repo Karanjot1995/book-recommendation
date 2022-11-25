@@ -7,7 +7,7 @@ const win = Dimensions.get('window');
 const Card = ({navigation,item}) => {
   // const navigation = useNavigation();
 
-  let imgUrl = item["Image-URL-L"] || item["Image-URL-M"] || item["Image-URL-S"]
+  let imgUrl = item["cover_img"]
   if(!imgUrl){
     imgUrl = 'https://img.webnovel.com/bookcover/12301378806233905/300/300.jpg?updateTime=1578397501796'
   }

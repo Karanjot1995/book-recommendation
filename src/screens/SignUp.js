@@ -38,15 +38,23 @@ export default function SignUp() {
 					'Content-Type': 'application/json',
 				}
 			}
-			
-			await fetch('http://10.219.175.225:5000/sign-up', opts)
-			.then(res=>res.json())
-			.then(data=>{
-				if(data.msg=='success'){
+      // await fetch('http://10.219.175.225:5000/sign-up', opts)
+			await fetch('http://10.219.175.225:8085/api/sign-up', opts)
+			.then(res=>{
+        if(res.status==201){
 					alert('Successfully signed up! Login to continue.')
 					navigation.navigate('Login')
 				}else{
-					alert('Email already registered!')
+					alert('Email already exists. Login to continue!')
+				}
+      })
+			.then(data=>{
+        console.log(data.status)
+				if(data.status==201){
+					alert('Successfully signed up! Login to continue.')
+					navigation.navigate('Login')
+				}else{
+					alert(data.msg)
 				}
 			})
 		}else{

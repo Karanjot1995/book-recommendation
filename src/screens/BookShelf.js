@@ -3,21 +3,18 @@ import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextIn
 import Card from "../components/common/Card";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FilterModal from "../components/common/FilterModal";
+import {useIsFocused } from '@react-navigation/native';
 
-
-const HomeScreen = ({navigation}) => {
+const BookShelf = ({navigation}) => {
   // const [state, setState] = useState({name:''})
   const [books, setBooks] = useState([])
+  const [shelfBooks, setShelfBooks] = useState({})
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = React.useState([]);
-
-
-
+  const isFocused = useIsFocused();
 
   async function fetchData (){
-    // let res = axios.get('http://127.0.0.1:5000/books')
-    await fetch('http://10.219.175.225:8085/api/books',{
-    // await fetch('https://karanjot1995.pythonanywhere.com/books',{
+    await fetch('http://10.219.175.225:8085/api/shelf',{
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -28,14 +25,15 @@ const HomeScreen = ({navigation}) => {
     })
     .then((response) => response.json())
     .then((data) => {
-      setBooks(data.slice(0,100))
+      setBooks(data.books)
+      setShelfBooks(data.shelf_books)
       setIsLoading(false)
     });
 
   }
   useEffect(() => {
     fetchData()
-  },[])
+  },[isFocused])
 
   function filterBooks(filtered_books){
     setBooks(filtered_books)
@@ -52,15 +50,28 @@ const HomeScreen = ({navigation}) => {
   }else{
   
     return(
-      <View style={{backgroundColor:'#141414'}}>
-        <FilterModal filterBooks={filterBooks} books={books}/>
-        {/* <Pressable
-          style={[styles.filterBtn, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Filter</Text>
-        </Pressable> */}
+      <View style={styles.view}>
         <FlatList
+            data={Object.keys(shelfBooks)}
+            renderItem={({ item }) => 
+              <View>
+                <Text style={styles.text}>{item.split('_').join(' ')}</Text>
+                <FlatList
+                    data={shelfBooks[item]}
+                    horizontal={true}
+                    renderItem={({ item }) =>
+                    <TouchableOpacity  onPress={() => navigation.navigate("Book Details",{id:item['id'],item,nav:'Home'})} >
+                    <Card item={item} />
+                    </TouchableOpacity>
+                    }
+                    keyExtractor={(item, index) => index}
+                />
+              </View>
+              
+            }
+            keyExtractor={item => item._id}
+        />
+        {/* <FlatList
           data={books}
           numColumns={2}
           renderItem={({ item }) =>
@@ -69,15 +80,21 @@ const HomeScreen = ({navigation}) => {
           </TouchableOpacity>
           }
           keyExtractor={(item, index) => index}
-        />
+        /> */}
       </View>
     )
   }
 };
 
 const styles = StyleSheet.create({
+
+  view:{
+    backgroundColor:'#141414',
+    paddingVertical:5
+  },
   text: {
     fontSize: 30,
+    color:'#fff'
   },
   input:{
     height: 50,
@@ -108,10 +125,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     flexWrap:'wrap',
     marginHorizontal:'auto'
-    // justifyContent:'space-around',
-    // alignItems:'flex-start'
   },
-  
 
 });
-export default HomeScreen;
+export default BookShelf;

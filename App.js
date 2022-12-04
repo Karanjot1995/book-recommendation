@@ -15,6 +15,9 @@ import { Button } from "react-native-elements";
 import Profile from "./src/screens/Profile";
 import SignUp from "./src/screens/SignUp";
 import Liked from "./src/screens/Liked";
+import Icon from 'react-native-vector-icons/AntDesign';
+import BookShelf from "./src/screens/BookShelf";
+
 // import { Linking } from 'expo';
 // const prefix = Linking.createURL('/');
 const Stack = createStackNavigator();
@@ -59,11 +62,42 @@ function MyTabs() {
       navigation.navigate('Login')
     }
   },[])
+  const screenOptions = (route, color) => {
+    let iconName;
+  
+    switch (route.name) {
+      case 'Home':
+        iconName = 'home';
+        break;
+      case 'Search':
+        iconName = 'search1';
+        break;
+      case 'Recommended':
+        iconName = 'smileo';
+        break;
+      case 'Liked':
+        iconName = 'staro';
+        break;
+      case 'Book Shelf':
+        iconName = 'book';
+        break;
+      case 'Profile':
+        iconName = 'user';
+        break;
+      default:
+        break;
+    }
+  
+    return <Icon name={iconName} color={color} size={24} />;
+  };
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={({route}) => ({
+      tabBarIcon: ({color}) => screenOptions(route, color),
+    })}>
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Recommended" component={Recommendations} />
       <Tab.Screen name="Liked" component={Liked} />
+      <Tab.Screen name="Book Shelf" component={BookShelf} />
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Search" component={Search} />
     </Tab.Navigator>

@@ -2,6 +2,7 @@ import React,{useState, useReducer, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextInput,FlatList} from "react-native";
 import Card from "../components/common/Card";
 // import booksData from './books.json';
+import uuid from 'react-native-uuid';
 
 const Recommendations = ({navigation}) => {
   const [state, setState] = useState({name:''})
@@ -40,7 +41,7 @@ const Recommendations = ({navigation}) => {
             data={genreBooks[genre].sort(() => Math.random() - 0.5)}
             renderItem={Card}
             horizontal={true}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => uuid.v4()}
           />
         </View>
         // <Text style={styles.text}>{genre}</Text>

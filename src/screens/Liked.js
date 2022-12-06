@@ -1,3 +1,4 @@
+import {HOST} from '@env';
 import React,{useState, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextInput,FlatList} from "react-native";
 import Card from "../components/common/Card";
@@ -12,7 +13,7 @@ const Liked = ({navigation}) => {
 
   async function fetchData (){
     // await fetch('https://karanjot1995.pythonanywhere.com/books',{
-    await fetch('http://10.219.175.225:8085/api/books',{
+    await fetch(`${HOST}/api/books`,{
         method: 'GET',
       headers: {
         Accept: 'application/json',

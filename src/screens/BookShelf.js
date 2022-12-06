@@ -1,3 +1,4 @@
+import {HOST} from '@env';
 import React,{useState, useReducer, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextInput,FlatList, Modal, Pressable} from "react-native";
 import Card from "../components/common/Card";
@@ -14,7 +15,7 @@ const BookShelf = ({navigation}) => {
   const isFocused = useIsFocused();
 
   async function fetchData (){
-    await fetch('http://10.219.175.225:8085/api/shelf',{
+    await fetch(`${HOST}/api/shelf`,{
       method: 'GET',
       headers: {
         Accept: 'application/json',

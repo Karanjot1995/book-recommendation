@@ -4,9 +4,8 @@ import {Image, Text, StyleSheet, View , Button , TouchableOpacity , TextInput,Fl
 import { Dimensions } from "react-native";
 const win = Dimensions.get('window');
 
-const Card = ({navigation,item}) => {
+const Card = ({item}) => {
   // const navigation = useNavigation();
-
   let imgUrl = item["cover_img"]
   if(!imgUrl){
     imgUrl = 'https://img.webnovel.com/bookcover/12301378806233905/300/300.jpg?updateTime=1578397501796'

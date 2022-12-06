@@ -1,3 +1,4 @@
+import {HOST} from '@env';
 import React,{useState, useReducer, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , Image, FlatList} from "react-native";
 import {useNavigation} from '@react-navigation/native';
@@ -20,7 +21,7 @@ const Profile = () => {
   },[isFocused])
 
   async function logout(){
-    await fetch('http://10.219.175.225:8085/api/logout')
+    await fetch(`${HOST}/api/logout`)
     .then(res=>res.json())
     .then(data=>{
       localStorage.setItem('token', "");
@@ -30,7 +31,7 @@ const Profile = () => {
   }
 
   async function getShelf(){
-    await fetch('http://10.219.175.225:8085/api/shelf',{
+    await fetch(`${HOST}/api/shelf`,{
       // await fetch('https://karanjot1995.pythonanywhere.com/books',{
         method: 'GET',
         headers: {

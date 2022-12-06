@@ -1,4 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
+import {HOST} from '@env';
 import React, { useState } from "react";
 import {useNavigation} from '@react-navigation/native';
 
@@ -45,7 +46,7 @@ export default function Login() {
     }
     // https://karanjot1995.pythonanywhere.com
     // http://172.20.10.3:8085/api/login
-    await fetch('http://10.219.175.225:8085/api/login', opts).then(res=>{
+    await fetch(`${HOST}/api/login`, opts).then(res=>{
     // await fetch('http://10.219.175.225:5000/token', opts).then(res=>{
       if(res.status==200){
         return res.json()

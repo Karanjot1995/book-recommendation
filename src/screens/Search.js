@@ -55,7 +55,7 @@
 // })
 
 // export default Search
-
+import {HOST} from '@env';
 import React,{useState, useReducer, useEffect} from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { ListItem, SearchBar } from "react-native-elements";
@@ -80,7 +80,7 @@ const Search  = () => {
 	const fetchData = async () =>{
 		// let res = axios.get('http://10.219.175.225:5000/books')
 		// console.log(res.data)
-		await fetch('http://10.219.175.225:8085/api/books',{
+		await fetch(`${HOST}/api/books`,{
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

@@ -1,3 +1,4 @@
+import {HOST} from '@env';
 import React,{useState, useReducer, useEffect} from "react";
 import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextInput,FlatList} from "react-native";
 import Card from "../components/common/Card";
@@ -20,7 +21,7 @@ const Recommendations = ({navigation}) => {
         'Content-Type': 'application/json',
       }
     }
-    await fetch('http://10.219.175.225:8085/api/recommendations',opts)
+    await fetch(`${HOST}/api/recommendations`,opts)
     .then((response) => response.json())
     .then((data) => {
       setGenreBooks(data.genre_books)

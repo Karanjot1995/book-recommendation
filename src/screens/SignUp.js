@@ -1,4 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
+import {HOST} from '@env';
 import React, { useState } from "react";
 import {useNavigation} from '@react-navigation/native';
 
@@ -39,7 +40,7 @@ export default function SignUp() {
 				}
 			}
       // await fetch('http://10.219.175.225:5000/sign-up', opts)
-			await fetch('http://10.219.175.225:8085/api/sign-up', opts)
+			await fetch(`${HOST}/api/sign-up`, opts)
 			.then(res=>{
         if(res.status==201){
 					alert('Successfully signed up! Login to continue.')

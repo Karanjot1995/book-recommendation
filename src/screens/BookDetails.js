@@ -1,3 +1,4 @@
+import {HOST} from '@env';
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import {Modal,Image, Text, StyleSheet, View , Pressable , TouchableOpacity , TextInput,FlatList, ScrollView} from "react-native";
@@ -23,7 +24,7 @@ const BookDetails = (props) => {
 //   let nav = props.route.params.nav
   // let book = booksData.filter(b=>b['ISBN'] == id)[0]
   async function fetchData (){
-    await fetch('http://10.219.175.225:8085/api/books',{
+    await fetch(`${HOST}/api/books`,{
     // await fetch('https://karanjot1995.pythonanywhere.com/books',{
       method: 'GET',
       headers: {
@@ -66,7 +67,7 @@ const BookDetails = (props) => {
         'Content-Type': 'application/json',
       }
     }      
-    await fetch('http://10.219.175.225:8085/api/like', opts)
+    await fetch(`${HOST}/api/like`, opts)
     // await fetch('http://10.219.175.225:5000/like', opts)
     .then(res=>res.json())
     .then(data=>{
@@ -95,7 +96,7 @@ const BookDetails = (props) => {
         'Content-Type': 'application/json',
       }
     }      
-    await fetch('http://10.219.175.225:8085/api/shelf', opts)
+    await fetch(`${HOST}/api/shelf`, opts)
     // await fetch('http://10.219.175.225:5000/like', opts)
     .then(res=>res.json())
     .then(data=>localStorage.setItem('user', JSON.stringify(data.user)))

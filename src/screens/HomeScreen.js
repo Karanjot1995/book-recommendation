@@ -3,6 +3,9 @@ import { Text, StyleSheet, View , Button , TouchableOpacity , ScrollView, TextIn
 import Card from "../components/common/Card";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FilterModal from "../components/common/FilterModal";
+import {HOST} from '@env';
+import { render, screen, fireEvent } from '@testing-library/react-native';
+// import {HOST} from 'react-native-dotenv';
 
 
 const HomeScreen = ({navigation}) => {
@@ -13,10 +16,10 @@ const HomeScreen = ({navigation}) => {
 
 
 
-
   async function fetchData (){
+    // https://recommendation-mjfz.onrender.com/
     // let res = axios.get('http://127.0.0.1:5000/books')
-    await fetch('http://10.219.175.225:8085/api/books',{
+    await fetch(`${HOST}/api/books`,{
     // await fetch('https://karanjot1995.pythonanywhere.com/books',{
       method: 'GET',
       headers: {
